@@ -19,6 +19,11 @@ ARG JDK_URL
 ARG JDK_RPM
 ARG JDK_PATH
 
+COPY files/artifactory-centos.repo /etc/yum.repos.d/artifactory-centos.repo
+RUN rm -f /etc/yum.repos.d/CentOs*
+#Disable the fastestmirror plugin since we've got the local repo configured
+RUN sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/fastestmirror.conf
+
 # Install Oracle Java and presto-admin dependences (already has python 2.6)
 RUN yum install -y \
       wget \

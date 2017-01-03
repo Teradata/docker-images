@@ -15,10 +15,10 @@
 FROM teradatalabs/centos6-ssh-oj8
 MAINTAINER Teradata Docker Team <docker@teradata.com>
 
-RUN \
-  wget -nv http://public-repo-1.hortonworks.com/HDP/centos6/2.x/updates/2.5.0.0/hdp.repo -P /etc/yum.repos.d \
+COPY files/artifactory-hdp-2.5.0.0.repo /etc/yum.repos.d/artifactory-hdp-2.5.0.0.repo
 
-  && yum install -y \
+RUN \
+  yum install -y \
     hadoop-hdfs-namenode \
     hadoop-hdfs-secondarynamenode \
     hadoop-hdfs-datanode \

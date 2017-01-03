@@ -1,0 +1,5 @@
+[artifactory-cdh-5.8.2]
+name=artifactory-cdh-5.8.2
+baseurl=http://192.168.99.100:8081/artifactory/cdh/5.8.2
+enabled=1
+gpgcheck=0

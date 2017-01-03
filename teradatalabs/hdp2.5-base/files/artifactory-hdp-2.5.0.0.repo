@@ -1,0 +1,18 @@
+#VERSION_NUMBER=2.5.0.0-1245
+[artifactory-HDP-2.5.0.0]
+name=HDP Version - HDP-2.5.0.0
+baseurl=http://192.168.99.100:8081/artifactory/artifactory-HDP-2.5.0.0/
+gpgcheck=1
+gpgkey=http://192.168.99.100:8081/artifactory/artifactory-HDP-2.5.0.0/RPM-GPG-KEY/RPM-GPG-KEY-Jenkins
+enabled=1
+priority=1
+
+
+[artifactory-HDP-UTILS-1.1.0.21]
+name=HDP-UTILS Version - HDP-UTILS-1.1.0.21
+baseurl=http://192.168.99.100:8081/artifactory/artifactory-HDP-UTILS-1.1.0.21/
+gpgcheck=1
+gpgkey=http://192.168.99.100:8081/artifactory/artifactory-HDP-2.5.0.0//RPM-GPG-KEY/RPM-GPG-KEY-Jenkins
+enabled=1
+priority=1
+

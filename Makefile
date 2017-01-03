@@ -30,7 +30,7 @@ ORGDIR=teradatalabs
 # indirectly from this one, and you should pass those variables to the
 # Dockerfiles using ARG and --build-arg.
 #
-JDK_URL := http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm
+JDK_URL := http://192.168.99.100:8081/artifactory/artifactory-manual-uploads/jdk-8u102-linux-x64.rpm
 JDK_RPM := $(notdir $(JDK_URL))
 INSTALL_JDK_BUILD_ARGS := \
 	--build-arg JDK_URL=$(JDK_URL) \

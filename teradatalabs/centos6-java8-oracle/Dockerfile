@@ -19,6 +19,11 @@ ARG JDK_URL
 ARG JDK_RPM
 ARG JDK_PATH
 
+COPY files/artifactory-centos.repo /etc/yum.repos.d/artifactory-centos.repo
+RUN rm -f /etc/yum.repos.d/CentOs*
+#Disable the fastestmirror plugin since we've got the local repo configured
+RUN sed -i 's/enabled=1/enabled=0/g' /etc/yum/pluginconf.d/fastestmirror.conf
+
 # Install Oracle Java, trim it down and clean up temporary files after installation
 RUN yum install -y wget && \
     wget --header "Cookie: oraclelicense=accept-securebackup-cookie" $JDK_URL && \

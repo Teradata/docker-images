@@ -15,15 +15,12 @@
 FROM teradatalabs/centos6-java8-oracle
 MAINTAINER Teradata Docker Team <docker@teradata.com>
 
-# Setup CDH repo, pin the CDH distribution to a concrete version
-RUN wget http://archive.cloudera.com/cdh5/one-click-install/redhat/6/x86_64/cloudera-cdh-5-0.x86_64.rpm \
-  && yum --nogpgcheck localinstall -y cloudera-cdh-5-0.x86_64.rpm \
-  && rm cloudera-cdh-5-0.x86_64.rpm \
-  && rpm --import http://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/RPM-GPG-KEY-cloudera \
-  && sed -i '/^baseurl=/c\baseurl=https://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/5.8.2/' /etc/yum.repos.d/cloudera-cdh5.repo \
+COPY files/artifactory-cdh-5.8.2.repo /etc/yum.repos.d/artifactory-cdh-5.8.2.repo
 
+# Setup CDH repo, pin the CDH distribution to a concrete version
+RUN \
 # Install hive, as it's needed by all child images
-  && yum install -y hive \
+  yum install -y hive \
 
 # Install supervisord
   && yum install -y python-setuptools \

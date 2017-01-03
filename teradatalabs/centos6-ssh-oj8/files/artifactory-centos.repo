@@ -1,0 +1,12 @@
+[artifactory-centos]
+name=artifactory-centos
+baseurl=http://192.168.99.100:8081/artifactory/centos
+enabled=1
+gpgcheck=0
+
+[artifactory-centos-updates]
+name=artifactory-centos-updates
+baseurl=http://192.168.99.100:8081/artifactory/centos-updates
+enabled=1
+gpgcheck=0
+
