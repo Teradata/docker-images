@@ -15,10 +15,10 @@
 FROM teradatalabs/centos6-java8-oracle
 MAINTAINER Teradata Docker Team <docker@teradata.com>
 
-# ADD REPO FOR MAPR
+# ADD REPO FOR MapR
 ADD files/maprtech.repo /etc/yum.repos.d/maprtech.repo
 RUN yum update -y \
-# ... get maprgpg key
+# ... GET MapRGPG KEY
   && rpm --import http://package.mapr.com/releases/pub/maprgpg.key \
 
 # INSTALL UTILITY SOFTWARE
@@ -28,19 +28,20 @@ RUN yum update -y \
   && chkconfig sshd on \
   && service sshd start \
 
-# INSTALL MAPR 
+# INSTALL MapR 
   && yum install -y mapr-fileserver mapr-nfs mapr-nodemanager  mapr-cldb \ 
   && yum install -y mapr-zookeeper mapr-resourcemanager mapr-historyserver \  
   && yum install -y mapr-webserver  mapr-gateway \
 
-# NECESSARY CONFIGURATION FOR MAPR
+# CONFIGURE ZOOKEEPER'S DATA DIRECTORY
   && rm -rf /opt/mapr/zkdata \
   && mkdir /opt/mapr/zkdata \
   && chmod 777 /opt/mapr/zkdata \
   && mkdir -p /mapr \
+# THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
   && echo "/home/mapr/storagefile" > /root/disk.txt \
 
-# INSTALL PYTHON
+# INSTALL PYTHON AND SUPERVISORD
   && yum install -y python-setuptools \
   && easy_install pip \
   && pip install supervisor \
@@ -55,7 +56,6 @@ RUN yum update -y \
   && ssh-keygen -t rsa -b 4096 -C "automation@teradata.com" -N "" -f /root/.ssh/id_rsa \
   && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys \
 
-# ADD USERS
   && adduser mapr \
   && touch /home/mapr \
   && echo "cd /home/mapr" >> /home/mapr/.bashrc \

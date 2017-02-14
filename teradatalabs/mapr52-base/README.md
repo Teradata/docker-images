@@ -1,7 +1,7 @@
 # mapr52-base
             
 
-Docker image with Hive installed from MAPR repositories.
+Docker image with Hive installed from MapR repositories.
 
 ## Oracle license
 

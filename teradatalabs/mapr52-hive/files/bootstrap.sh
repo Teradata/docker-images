@@ -1,19 +1,19 @@
 #!/bin/sh
 
-# CONFIGURE MAPR
+# CONFIGURE MapR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
-# SETUP DISK FOR MAPR
+# SETUP FLAT FILE /home/mapr/storagefile
 dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
+
+# SETUP DISK FOR MAPR BY RUNNING disksetup
 /opt/mapr/server/disksetup -M -F /root/disk.txt
 
 # CREATE HIVE PROXY USERS
 chmod 755 /opt/mapr/conf/proxy
 
-# START ZOOKEEPER
+# START SERVICES
 service mapr-zookeeper start
-
-# START WARDEN 
 service mapr-warden start
 
 # CONFIGURE HIVE

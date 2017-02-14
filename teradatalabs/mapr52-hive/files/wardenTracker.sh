@@ -52,4 +52,3 @@ while [ $Services -ne 2 ]
 do
    Services=$(maprcli service list -node $hname | grep JobHistoryServer |awk '{$1=$1};1' | tr ' ' '\n' | tail -1f)
 done
-

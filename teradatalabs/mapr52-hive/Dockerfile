@@ -31,7 +31,6 @@ RUN chmod 777 /root/*.sh \
   && yum install -y mysql-server mysql-connector-java \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \ 
 
-# RUN SETUP script
   && /root/setup.sh \
 
 # INSTALL HIVE
@@ -39,10 +38,10 @@ RUN chmod 777 /root/*.sh \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
 
 # HDFS PORTS
-EXPOSE 1004 1006 8020 50010 50020 50070 50075 50470
+EXPOSE 5660 6660 5692 5724 5756 6692 6724 6756
 
 # YARN PORTS
-EXPOSE 8030 8031 8032 8033 8040 8041 8042 8088 10020 19888
+EXPOSE 8030 8020 7222 8088 7220 7221 8443 8031 8032 8033 8040 8041 8042 8088 10020 19888
 
 # HIVE PORT
 EXPOSE 9083 10000
@@ -50,5 +49,4 @@ EXPOSE 9083 10000
 # SOCKS PORT
 EXPOSE 1180
 
-# RUN STARTUP SCRIPT
 CMD /root/startup.sh
