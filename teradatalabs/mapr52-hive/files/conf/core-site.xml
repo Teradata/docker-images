@@ -22,10 +22,12 @@
   		<value>*</value>
   	<description>Allow the superuser mapr to impersonate any member of any group</description>
 	</property>
+	
 	<property>
   		<name>hadoop.proxyuser.mapr.hosts</name>
   		<value>*</value>
   		<description>The superuser can connect from any host to impersonate a user</description>
 	</property>
+
 </configuration>
 

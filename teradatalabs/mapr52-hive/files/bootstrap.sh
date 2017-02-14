@@ -1,41 +1,27 @@
 #!/bin/sh
 
-#configure mapr
+# CONFIGURE MAPR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
-#setup disk for mapr
+# SETUP DISK FOR MAPR
 dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
 /opt/mapr/server/disksetup -M -F /root/disk.txt
 
-#create proxy setup for hive users
+# CREATE HIVE PROXY USERS
 chmod 755 /opt/mapr/conf/proxy
-touch /opt/mapr/conf/proxy/hive-user
-touch /opt/mapr/conf/proxy/hdfs-user
 
-#start zookeeper
+# START ZOOKEEPER
 service mapr-zookeeper start
 
-#start warden 
+# START WARDEN 
 service mapr-warden start
 
-
-#configure hive
+# CONFIGURE HIVE
 /opt/mapr/server/configure.sh -R
 
-#wait for warden to start all the services
-
+# WAIT FOR WARDEN TO START ALL THE SERVICES
 sh /root/wardenTracker.sh
 
-
-#run hdfs commands
-hadoop fs -mkdir /user/hive-user
-hadoop fs -chmod 777 /user/hive-user
-hadoop fs -mkdir /user/hdfs-user
-hadoop fs -chmod 777 /user/hdfs-user
-hadoop fs -mkdir /user/root
-hadoop fs -mkdir /user/hive
-hadoop fs -mkdir /user/hive/warehouse
-hadoop fs -chmod 777 /user/hive
-hadoop fs -chmod 777 /user/hive/warehouse
-
-
+# RUN HDFS COMMANDS
+hadoop fs -mkdir /user/root /user/hive /user/hive/warehouse
+hadoop fs -chmod 777 /user/hive /user/hive/warehouse
