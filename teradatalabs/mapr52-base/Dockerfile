@@ -26,6 +26,8 @@ RUN yum update -y \
 
 # CONFIGURE SSH
   && chkconfig sshd on \
+  && ssh root@hadoop-master 'bash -s' < /root/wardenTracker.sh
+  && grep -rl '#Port 22'  /etc/ssh/sshd_config | xargs sed -i 's/#Port 22/Port 22/g' \
   && service sshd start \
 
 # INSTALL MapR 
@@ -57,5 +59,12 @@ RUN yum update -y \
   && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys \
 
   && adduser mapr \
-  && touch /home/mapr \
+  && adduser hive \
+  && adduser hdfs \
+  && touch /home/mapr /home/hive /home/hdfs  \
   && echo "cd /home/mapr" >> /home/mapr/.bashrc \
+  && echo "cd /home/hive" >> /home/hive/.bashrc \
+  && echo "cd /home/hdfs" >> /home/hdfs/.bashrc \
+  && chown mapr:mapr /home/mapr \
+  && chown hive:hive /home/hive \
+  && chown hdfs:hdfs /home/hdfs

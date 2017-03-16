@@ -35,7 +35,7 @@ RUN chmod 777 /root/*.sh \
 
 # INSTALL HIVE
   && yum install -y mapr-hive mapr-hiveserver2 mapr-hivemetastore \
-  && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
+  && yum -y clean all && rm -rf /tmp/* /var/tmp/*
 
 # HDFS PORTS
 EXPOSE 5660 6660 5692 5724 5756 6692 6724 6756
