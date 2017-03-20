@@ -17,6 +17,7 @@ MAINTAINER Teradata Docker Team <docker@teradata.com>
 
 # ADD REPO FOR MapR
 ADD files/maprtech.repo /etc/yum.repos.d/maprtech.repo
+COPY files/id_rsa.pub /root/
 RUN yum update -y \
 # ... GET MapRGPG KEY
   && rpm --import http://package.mapr.com/releases/pub/maprgpg.key \
@@ -26,7 +27,6 @@ RUN yum update -y \
 
 # CONFIGURE SSH
   && chkconfig sshd on \
-  && ssh root@hadoop-master 'bash -s' < /root/wardenTracker.sh
   && grep -rl '#Port 22'  /etc/ssh/sshd_config | xargs sed -i 's/#Port 22/Port 22/g' \
   && service sshd start \
 
@@ -57,6 +57,7 @@ RUN yum update -y \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
   && ssh-keygen -t rsa -b 4096 -C "automation@teradata.com" -N "" -f /root/.ssh/id_rsa \
   && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys \
+  && cat /root/id_rsa.pub | cat >>  ~/.ssh/authorized_keys \
 
   && adduser mapr \
   && adduser hive \
