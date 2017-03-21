@@ -1,3 +1,4 @@
+wait_for_mapr
 exposes_hive
 allows_creating_a_table_in_hive
 allows_selecting_from_the_table

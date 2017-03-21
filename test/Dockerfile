@@ -15,11 +15,21 @@
 FROM teradatalabs/centos6-java8-oracle
 
 ENV DOCKERIZE_VERSION v0.3.0
-
+RUN mkdir /root/.ssh
+COPY conf/* /root/.ssh/
+COPY files/* /root/
 RUN \
   yum install -y \
     wget \
     unzip \
+
+# INSTALL UTILITY SOFTWARE
+  && yum install -y openssh-server openssh-clients \
+
+# CONFIGURE SSH
+  && chkconfig sshd on \
+  && grep -rl '#Port 22'  /etc/ssh/sshd_config | xargs sed -i 's/#Port 22/Port 22/g' \
+  && service sshd start \
 
   # setup CDH repo, pin the CDH distribution to a concrete version
   && wget -nv http://archive.cloudera.com/cdh5/one-click-install/redhat/6/x86_64/cloudera-cdh-5-0.x86_64.rpm \
@@ -45,7 +55,8 @@ RUN \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
 
   # create 'image_tests' volume mount path
-  && mkdir /image_tests
+  && mkdir /image_tests \
+  && chmod 777 /root/*.sh
 
 VOLUME /image_tests
 
