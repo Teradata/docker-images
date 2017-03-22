@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# START SSH SERVICE
+service sshd start
+
 # CONFIGURE MapR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 

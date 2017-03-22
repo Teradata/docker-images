@@ -16,7 +16,7 @@ FROM teradatalabs/centos6-java8-oracle
 
 ENV DOCKERIZE_VERSION v0.3.0
 RUN mkdir /root/.ssh
-COPY conf/* /root/.ssh/
+COPY /files/conf/* /root/.ssh/
 COPY files/* /root/
 RUN \
   yum install -y \
@@ -56,7 +56,8 @@ RUN \
 
   # create 'image_tests' volume mount path
   && mkdir /image_tests \
-  && chmod 777 /root/*.sh
+  && chmod 777 /root/*.sh \
+  && chmod 600 /root/.ssh/id_rsa.pub /root/.ssh/id_rsa
 
 VOLUME /image_tests
 
