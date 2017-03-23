@@ -64,7 +64,7 @@ RUN /usr/sbin/kdb5_util create -s -P password \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/presto-server.keytab presto-server/presto-master.docker.cluster" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/presto-client.keytab presto-client/presto-master.docker.cluster" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/hive-presto-master.keytab hive/presto-master.docker.cluster" \
-  && chmod 644 /etc/presto/conf/*.keytab
+  && chmod 644 /etc/presto/conf/*.keytab \
   && cat /opt/mapr/conf/env.sh | sed -e '0,/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > env_new.sh \
   && cat env_new.sh | sed -e '0,/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > /opt/mapr/conf/env.sh \
   && rm -rf env_new.sh

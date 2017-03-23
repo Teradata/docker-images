@@ -29,6 +29,10 @@ service mapr-warden start
 # WAIT FOR WARDEN TO START ALL  THE SERVICES
 sh /root/wardenTracker.sh
 
+# START HTTPFS SERVICES
+maprcli node services -name httpfs -action start -nodes $(hostname) 
+chown -R mapr /opt/mapr/httpfs
+
 # CREATE KERBEROS TICKET
 kinit -kt /opt/mapr/conf/mapr.keytab mapr/mycluster@LABS.TERADATA.COM
 
