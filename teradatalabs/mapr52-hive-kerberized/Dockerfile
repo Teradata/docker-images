@@ -32,7 +32,6 @@ ADD files/kerberos/kdc.conf /var/kerberos/krb5kdc/kdc.conf
 ADD files/kerberos/kadm5.acl /var/kerberos/krb5kdc/kadm5.acl
 ADD files/jceJars/local_policy.jar /usr/java/jdk1.8.0_102/jre/lib/security/local_policy.jar
 ADD files/jceJars/US_export_policy.jar /usr/java/jdk1.8.0_102/jre/lib/security/US_export_policy.jar
-ADD files/conf/env.sh /opt/mapr/conf/env.sh
 
 # ENABLE HIVE SECURITY
 ADD files/conf/hive-site.xml /opt/mapr/hive/hive-1.2/conf/hive-site.xml
@@ -66,6 +65,10 @@ RUN /usr/sbin/kdb5_util create -s -P password \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/presto-client.keytab presto-client/presto-master.docker.cluster" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/hive-presto-master.keytab hive/presto-master.docker.cluster" \
   && chmod 644 /etc/presto/conf/*.keytab
+  && cat /opt/mapr/conf/env.sh | sed -e '0,/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > env_new.sh \
+  && cat env_new.sh | sed -e '0,/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > /opt/mapr/conf/env.sh \
+  && rm -rf env_new.sh
+
 
 # CREATE SSL KEYSTORE
 RUN keytool -genkeypair \
