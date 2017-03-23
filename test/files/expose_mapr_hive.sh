@@ -11,23 +11,10 @@ do
  fi
 done
 
-hiveportReady=$(ssh -o StrictHostKeyChecking=no root@hadoop-master 'netstat -tuplen' | grep 10000 | wc -l)
-
-# WAIT FOR HIVE PORT TO OPEN
-while [ $hiveportReady -ne 1 ]
+hivecliReady=1
+while [ $hivecliReady -ne 0 ]
 do
   sleep 5s
-  hiveportReady=$(ssh -o StrictHostKeyChecking=no root@hadoop-master 'netstat -tuplen' | grep 10000 | wc -l)
+  ssh -o StrictHostKeyChecking=no root@hadoop-master 'hadoop fs -ls /user/hive/warehouse'
+  hivecliReady=$?
 done
-
-maprReady=$(ssh -o StrictHostKeyChecking=no root@hadoop-master 'ps -ef | grep wardenTracker.sh' | wc -l)
-
-# WAIT FOR WARDEN TO START ALL SERVICES
-while [ $maprReady -ne 2 ]
-do
- maprReady=$(ssh -o StrictHostKeyChecking=no root@hadoop-master 'ps -ef | grep wardenTracker.sh' | wc -l)
-done
-
-# WAIT FOR HIVE DIRECTORIES TO BE CREATED
-ssh -o StrictHostKeyChecking=no root@hadoop-master './wait_for_mapr_hive.sh'
-

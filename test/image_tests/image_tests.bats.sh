@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+user=hdfs
 skip_if_needed() {
   SHOULD_RUN=true
   # Can't rely on exit codes here, as BATS will fail the test if any of the statements
@@ -24,6 +25,7 @@ assert_output_contains() {
 
 function wait_for_mapr {
   skip_if_needed
+  user=hive
   assert_run sh /root/expose_mapr_hive.sh
 }
 
@@ -35,12 +37,12 @@ function exposes_hive {
 function allows_creating_a_table_in_hive {
   
   skip_if_needed
-  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
+  assert_run beeline -n $user -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
 }
 
 function allows_selecting_from_the_table {
   skip_if_needed
-  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
+  assert_run beeline -n $user -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
   assert_output_contains 'test.id'
   assert_output_contains '42'
 }
