@@ -38,8 +38,8 @@ ADD files/conf/hive-site.xml /opt/mapr/hive/hive-1.2/conf/hive-site.xml
 
 # CREATE KERBEROS DATABASE
 RUN /usr/sbin/kdb5_util create -s -P password \
-  && usermod -g root hdfs
-  && usermod -g mapr hdfs
+  && usermod -g root hdfs \
+  && usermod -g mapr hdfs \
 # CREATE MAPR AND HIVE PRINCIPALS AND KEYTABS
   && /usr/sbin/kadmin.local -q "addprinc -randkey mapr/mycluster@LABS.TERADATA.COM" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /opt/mapr/conf/mapr.keytab mapr/mycluster@LABS.TERADATA.COM" \
@@ -65,10 +65,9 @@ RUN /usr/sbin/kdb5_util create -s -P password \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/presto-client.keytab presto-client/presto-master.docker.cluster" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /etc/presto/conf/hive-presto-master.keytab hive/presto-master.docker.cluster" \
   && chmod 644 /etc/presto/conf/*.keytab \
-  && cat /opt/mapr/conf/env.sh | sed -e '0,/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > env_new.sh \
-  && cat env_new.sh | sed -e '0,/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/ s/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=simple"/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > /opt/mapr/conf/env.sh \
+  && cat /opt/mapr/conf/env.sh | sed -e '0,/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=maprsasl_keytab"/ s/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=maprsasl_keytab"/MAPR_HIVE_SERVER_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > env_new.sh \
+  && cat env_new.sh | sed -e '0,/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=maprsasl"/ s/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=maprsasl"/MAPR_HIVE_LOGIN_OPTS="-Dhadoop.login=hybrid"/' > /opt/mapr/conf/env.sh \
   && rm -rf env_new.sh
-
 
 # CREATE SSL KEYSTORE
 RUN keytool -genkeypair \
