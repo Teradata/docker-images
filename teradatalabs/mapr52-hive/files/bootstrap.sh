@@ -1,7 +1,8 @@
 #!/bin/sh
 
-# START SSH SERVICE
-service sshd start
+# START SSHD AND THE SOCKS PROXY FOR THE HIVE METASTORE
+supervisorctl start sshd
+supervisorctl start socks-proxy
 
 # CONFIGURE MapR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
