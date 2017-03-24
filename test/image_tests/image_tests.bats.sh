@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-user=hdfs
 skip_if_needed() {
   SHOULD_RUN=true
   # Can't rely on exit codes here, as BATS will fail the test if any of the statements
@@ -10,7 +9,6 @@ skip_if_needed() {
     skip
   fi
 }
-
 assert_run() {
   run "$@"
   echo "Output of [$*]:"
@@ -23,9 +21,8 @@ assert_output_contains() {
   printf '%s\n' "${lines[@]}" | grep -q $1
 }
 
-function wait_for_mapr {
+function exposes_mapr {
   skip_if_needed
-  user=hive
   assert_run sh /root/expose_mapr_hive.sh
 }
 
@@ -34,15 +31,26 @@ function exposes_hive {
   assert_run dockerize -wait tcp://hadoop-master:10000 -timeout 90s
 }
 
-function allows_creating_a_table_in_hive {
-  
+function allows_creating_a_table_in_hive_mapr {
   skip_if_needed
-  assert_run beeline -n $user -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
+  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
+}
+
+function allows_selecting_from_the_table_mapr {
+  skip_if_needed
+  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
+  assert_output_contains 'test.id'
+  assert_output_contains '42'
+}
+
+function allows_creating_a_table_in_hive {
+  skip_if_needed
+  assert_run beeline -n hdfs -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
 }
 
 function allows_selecting_from_the_table {
   skip_if_needed
-  assert_run beeline -n $user -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
+  assert_run beeline -n hdfs -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
   assert_output_contains 'test.id'
   assert_output_contains '42'
 }
