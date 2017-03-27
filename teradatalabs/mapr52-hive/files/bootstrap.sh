@@ -7,8 +7,12 @@ supervisorctl start socks-proxy
 # CONFIGURE MapR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
+date
+
 # SETUP FLAT FILE /home/mapr/storagefile
 dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
+
+date
 
 # SETUP DISK FOR MAPR BY RUNNING disksetup
 /opt/mapr/server/disksetup -M -F /root/disk.txt
@@ -16,16 +20,17 @@ dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
 # CREATE HIVE PROXY USERS
 chmod 755 /opt/mapr/conf/proxy
 
+date 
 # START SERVICES
 service mapr-zookeeper start
 service mapr-warden start
-
+date
 # CONFIGURE HIVE
 /opt/mapr/server/configure.sh -R
-
+date
 # WAIT FOR WARDEN TO START ALL THE SERVICES
 sh /root/wardenTracker.sh
-
+date
 # START HTTPFS SERVICES
 maprcli node services -name httpfs -action start -nodes $(hostname) 
 chown -R mapr /opt/mapr/httpfs

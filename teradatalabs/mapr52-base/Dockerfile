@@ -33,7 +33,7 @@ RUN yum update -y \
 # INSTALL MapR 
   && yum install -y mapr-fileserver mapr-nfs mapr-nodemanager  mapr-cldb \ 
   && yum install -y mapr-zookeeper mapr-resourcemanager mapr-historyserver \  
-  && yum install -y mapr-webserver  mapr-gateway \
+  && yum install -y mapr-webserver  mapr-gateway mapr-httpfs \
 
 # CONFIGURE ZOOKEEPER'S DATA DIRECTORY
   && rm -rf /opt/mapr/zkdata \
