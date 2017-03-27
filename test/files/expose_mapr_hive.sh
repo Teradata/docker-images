@@ -16,8 +16,5 @@ while [ $hivecliReady -ne 0 ]
 do
   sleep 5s
   ssh -o StrictHostKeyChecking=no root@hadoop-master 'hadoop fs -ls /user/hive/warehouse'
-  ssh -o StrictHostKeyChecking=no root@hadoop-master 'cat /var/log/bootstrap.log' > /root/bootstrap.log
-  ssh -o StrictHostKeyChecking=no root@sdl03545.labs.teradata.com 'ls -ltr /root/'
-  scp /root/bootstrap.log root@sdl03545.labs.teradata.com:/root/
   hivecliReady=$?
 done
