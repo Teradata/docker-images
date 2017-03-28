@@ -1,4 +1,4 @@
 exposes_mapr
-allows_creating_a_table_in_mapr_hive
-allows_selecting_from_the_table_mapr_hive
+allows_creating_a_table_in_hive
+allows_selecting_from_the_table
 exposes_socks_proxy

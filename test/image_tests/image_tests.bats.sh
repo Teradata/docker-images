@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+get_user() {
+  skip_if_needed
+  if [ "${IMAGE}" == "teradatalabs/mapr52-hive" ]
+  then
+    echo "hive"
+  else
+    echo "hdfs"
+  fi
+}
+
 skip_if_needed() {
   SHOULD_RUN=true
   # Can't rely on exit codes here, as BATS will fail the test if any of the statements
@@ -9,6 +19,7 @@ skip_if_needed() {
     skip
   fi
 }
+
 assert_run() {
   run "$@"
   echo "Output of [$*]:"
@@ -31,26 +42,14 @@ function exposes_hive {
   assert_run dockerize -wait tcp://hadoop-master:10000 -timeout 90s
 }
 
-function allows_creating_a_table_in_mapr_hive {
-  skip_if_needed
-  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
-}
-
-function allows_selecting_from_the_table_mapr_hive {
-  skip_if_needed
-  assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
-  assert_output_contains 'test.id'
-  assert_output_contains '42'
-}
-
 function allows_creating_a_table_in_hive {
   skip_if_needed
-  assert_run beeline -n hdfs -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
+  assert_run beeline -n $(get_user) -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
 }
 
 function allows_selecting_from_the_table {
   skip_if_needed
-  assert_run beeline -n hdfs -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
+  assert_run beeline -n $(get_user) -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
   assert_output_contains 'test.id'
   assert_output_contains '42'
 }
