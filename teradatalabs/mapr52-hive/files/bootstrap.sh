@@ -7,9 +7,6 @@ supervisorctl start socks-proxy
 # CONFIGURE MapR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
-# SETUP FLAT FILE /home/mapr/storagefile
-dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
-
 # SETUP DISK FOR MAPR BY RUNNING disksetup
 /opt/mapr/server/disksetup -M -F /root/disk.txt
 

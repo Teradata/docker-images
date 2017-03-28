@@ -31,12 +31,12 @@ function exposes_hive {
   assert_run dockerize -wait tcp://hadoop-master:10000 -timeout 90s
 }
 
-function allows_creating_a_table_in_hive_mapr {
+function allows_creating_a_table_in_mapr_hive {
   skip_if_needed
   assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'create table test as select 42 id'
 }
 
-function allows_selecting_from_the_table_mapr {
+function allows_selecting_from_the_table_mapr_hive {
   skip_if_needed
   assert_run beeline -n hive -u jdbc:hive2://hadoop-master:10000 -e 'select * from test'
   assert_output_contains 'test.id'

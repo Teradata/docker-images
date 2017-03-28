@@ -40,8 +40,6 @@ RUN yum update -y \
   && mkdir /opt/mapr/zkdata \
   && chmod 777 /opt/mapr/zkdata \
   && mkdir -p /mapr \
-# THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
-  && echo "/home/mapr/storagefile" > /root/disk.txt \
 
 # INSTALL PYTHON AND SUPERVISORD
   && yum install -y python-setuptools \
@@ -68,4 +66,8 @@ RUN yum update -y \
   && echo "cd /home/hdfs" >> /home/hdfs/.bashrc \
   && chown mapr:mapr /home/mapr \
   && chown hive:hive /home/hive \
-  && chown hdfs:hdfs /home/hdfs
+  && chown hdfs:hdfs /home/hdfs \
+  # SETUP FLAT FILE /home/mapr/storagefile
+  && dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10 \
+  # THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
+  && echo "/home/mapr/storagefile" > /root/disk.txt
