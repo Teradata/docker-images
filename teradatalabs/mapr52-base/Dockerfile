@@ -68,6 +68,6 @@ RUN yum update -y \
   && chown hive:hive /home/hive \
   && chown hdfs:hdfs /home/hdfs \
   # SETUP FLAT FILE /home/mapr/storagefile
-  && dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10 \
+  && dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=3 \
   # THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
   && echo "/home/mapr/storagefile" > /root/disk.txt
