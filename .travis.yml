@@ -22,7 +22,7 @@ before_install:
   - sudo pip install docker-release
   - docker-release --version
 
-install: travis_wait 15 make ${IMAGES[@]}
+install: make ${IMAGES[@]}
 
 before_deploy:
   # decrypt the github deploy key
