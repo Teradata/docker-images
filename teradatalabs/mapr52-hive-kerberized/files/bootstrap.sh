@@ -3,9 +3,6 @@
 # CONFIGURE MAPR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
-# SETUP FLAT FILE /home/mapr/storagefile
-dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10
-
 # SETUP DISK FOR MAPR BY RUNNING disksetup
 /opt/mapr/server/disksetup -M -F /root/disk.txt
 
@@ -31,7 +28,6 @@ sh /root/wardenTracker.sh
 
 # START HTTPFS SERVICES
 maprcli node services -name httpfs -action start -nodes $(hostname) 
-chown -R mapr /opt/mapr/httpfs
 
 # CREATE KERBEROS TICKET
 kinit -kt /opt/mapr/conf/mapr.keytab mapr/mycluster@LABS.TERADATA.COM
