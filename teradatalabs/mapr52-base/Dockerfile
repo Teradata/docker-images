@@ -24,17 +24,26 @@ RUN yum update -y \
 
 # INSTALL UTILITY SOFTWARE
   && yum install -y iputils vim openssh-server openssh-clients sudo \ 
-
 # CONFIGURE SSH
   && chkconfig sshd on \
   && grep -rl '#Port 22'  /etc/ssh/sshd_config | xargs sed -i 's/#Port 22/Port 22/g' \
-  && service sshd start \
 
-# INSTALL MapR 
+# INSTALL MAPR 
   && yum install -y mapr-fileserver mapr-nfs mapr-nodemanager  mapr-cldb \ 
   && yum install -y mapr-zookeeper mapr-resourcemanager mapr-historyserver \  
   && yum install -y mapr-webserver  mapr-gateway mapr-httpfs \
 
+# ADD USERS AND CHANGE OWNERSHIPS
+  && adduser mapr \
+  && adduser hive \
+  && adduser hdfs \
+  && touch /home/mapr /home/hive /home/hdfs  \
+  && echo "cd /home/mapr" >> /home/mapr/.bashrc \
+  && echo "cd /home/hive" >> /home/hive/.bashrc \
+  && echo "cd /home/hdfs" >> /home/hdfs/.bashrc \
+  && chown -R mapr:mapr /home/mapr /opt/mapr/httpfs \
+  && chown hive:hive /home/hive \
+  && chown hdfs:hdfs /home/hdfs \
 # CONFIGURE ZOOKEEPER'S DATA DIRECTORY
   && rm -rf /opt/mapr/zkdata \
   && mkdir /opt/mapr/zkdata \
@@ -55,19 +64,4 @@ RUN yum update -y \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
   && ssh-keygen -t rsa -b 4096 -C "automation@teradata.com" -N "" -f /root/.ssh/id_rsa \
   && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys \
-  && cat /root/id_rsa.pub | cat >>  ~/.ssh/authorized_keys \
-
-  && adduser mapr \
-  && adduser hive \
-  && adduser hdfs \
-  && touch /home/mapr /home/hive /home/hdfs  \
-  && echo "cd /home/mapr" >> /home/mapr/.bashrc \
-  && echo "cd /home/hive" >> /home/hive/.bashrc \
-  && echo "cd /home/hdfs" >> /home/hdfs/.bashrc \
-  && chown mapr:mapr /home/mapr \
-  && chown hive:hive /home/hive \
-  && chown hdfs:hdfs /home/hdfs \
-  # SETUP FLAT FILE /home/mapr/storagefile
-  && dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10 \
-  # THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
-  && echo "/home/mapr/storagefile" > /root/disk.txt
+  && cat /root/id_rsa.pub | cat >>  ~/.ssh/authorized_keys

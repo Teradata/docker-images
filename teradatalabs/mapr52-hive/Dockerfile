@@ -30,12 +30,16 @@ RUN chmod 777 /root/*.sh \
 # INSTALL MYSQL SERVER
   && yum install -y mysql-server mysql-connector-java \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \ 
-
   && /root/setup.sh \
 
 # INSTALL HIVE
   && yum install -y mapr-hive mapr-hiveserver2 mapr-hivemetastore \
-  && yum -y clean all && rm -rf /tmp/* /var/tmp/*
+  && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
+
+# SETUP FLAT FILE /home/mapr/storagefile
+  && dd if=/dev/zero of=/home/mapr/storagefile bs=1G count=10 \
+# THE /root/disk.txt IS READ BY MapR TO DETERMINE WHICH DISKS IT CAN USE AND THE /home/mapr/storagefile IS A FLAT FILE THAT ACTS AS A DISK
+  && echo "/home/mapr/storagefile" > /root/disk.txt
 
 # HDFS PORTS
 EXPOSE 5660 6660 5692 5724 5756 6692 6724 6756

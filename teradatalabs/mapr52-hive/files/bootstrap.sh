@@ -24,8 +24,7 @@ service mapr-warden start
 sh /root/wardenTracker.sh
 
 # START HTTPFS SERVICES
-maprcli node services -name httpfs -action start -nodes $(hostname) 
-chown -R mapr /opt/mapr/httpfs
+maprcli node services -name httpfs -action start -nodes $(hostname)
 
 # RUN HDFS COMMANDS
 hadoop fs -mkdir /user/root /user/hive /user/hdfs /user/hive/warehouse /var /var/mapr /var/mapr/cluster /var/mapr/cluster/yarn /var/mapr/cluster/yarn/rm /var/mapr/cluster/yarn/rm/staging /var/mapr/cluster/yarn/rm/staging/hive
