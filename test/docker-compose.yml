@@ -4,6 +4,7 @@ services:
   hadoop-master:
     image: ${TESTED_IMAGE}
     hostname: hadoop-master
+    privileged: true
     ports:
     - '1180'
 
