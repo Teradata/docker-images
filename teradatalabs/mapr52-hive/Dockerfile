@@ -21,18 +21,13 @@ ADD files/conf/hive-site.xml /opt/mapr/hive/hive-1.2/conf/hive-site.xml
 ADD files/conf/core-site.xml /opt/mapr/hadoop/hadoop-2.7.0/etc/hadoop/core-site.xml
 ADD files/supervisord.conf /etc/supervisord.conf
 COPY files/supervisord.d/* /etc/supervisord.d/
-
 RUN chmod 777 /root/*.sh \
-# INSTALL UTILITY SOFTWARE  
-  && yum install -y openssh \
-  && yum install -y lsof \
-  
+
 # INSTALL MYSQL SERVER
   && yum install -y mysql-server mysql-connector-java \
-  && yum -y clean all && rm -rf /tmp/* /var/tmp/* \ 
   && /root/setup.sh \
 
-# INSTALL HIVE
+# INSTALL MAPR HIVE
   && yum install -y mapr-hive mapr-hiveserver2 mapr-hivemetastore \
   && yum -y clean all && rm -rf /tmp/* /var/tmp/* \
 

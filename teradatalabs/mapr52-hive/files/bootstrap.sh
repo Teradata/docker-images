@@ -4,10 +4,10 @@
 supervisorctl start sshd
 supervisorctl start socks-proxy
 
-# CONFIGURE MapR
+# CONFIGURE MAPR
 /opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
-# SETUP DISK FOR MAPR BY RUNNING disksetup
+# SETUP DISK FOR MAPR BY RUNNING DISKSETUP
 /opt/mapr/server/disksetup -M -F /root/disk.txt
 
 # CREATE HIVE PROXY USERS

@@ -15,7 +15,7 @@
 FROM teradatalabs/mapr52-hive
 MAINTAINER Teradata Docker Team <docker@teradata.com>
 
-# REMOVE THESE FILES IF IT IS ALREADY THERE
+# REMOVE UNNECESSARY FILES
 RUN rm -rf /opt/mapr/conf/ssl_truststore \
   && rm -rf /opt/mapr/conf/maprserverticket \
   && rm -rf /opt/mapr/conf/cldb.key \
@@ -53,7 +53,8 @@ RUN /usr/sbin/kdb5_util create -s -P password \
 # CHANGE THE PERMISSIONS AND OWNERSHIPS FOR KEYTABS
   && chmod 644  /opt/mapr/conf/hive.keytab /opt/mapr/conf/mapr.keytab /opt/mapr/conf/hdfs.keytab \
   && chmod 777 /root/bootstrap.sh \
-  && chown mapr:mapr /opt/mapr/conf/hive.keytab /opt/mapr/conf/mapr.keytab \
+  && chown mapr:mapr /opt/mapr/conf/mapr.keytab \
+  && chown hive:hive /opt/mapr/conf/hive.keytab \
   && chown hdfs:hdfs /opt/mapr/conf/hdfs.keytab \
 
 # CREATE PRESTO PRINCIPAL AND KEYTAB

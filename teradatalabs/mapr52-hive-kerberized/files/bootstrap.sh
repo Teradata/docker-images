@@ -17,7 +17,7 @@ chmod 755 /opt/mapr/conf/proxy
 # CONFIGURE HIVE
 /opt/mapr/server/configure.sh -R
 
-# CONFIGURE KERBEROS
+# ENABLE SECURITY IN MAPR
 /opt/mapr/server/configure.sh -secure -genkeys -C localhost -Z localhost -N mycluster -no-autostart
 
 # START KERBEROS SERVICES
