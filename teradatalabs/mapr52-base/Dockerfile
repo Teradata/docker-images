@@ -27,6 +27,7 @@ RUN yum update -y \
 # CONFIGURE SSH
   && chkconfig sshd on \
   && grep -rl '#Port 22'  /etc/ssh/sshd_config | xargs sed -i 's/#Port 22/Port 22/g' \
+  && service sshd start \
 
 # INSTALL MAPR 
   && yum install -y mapr-fileserver mapr-nfs mapr-nodemanager  mapr-cldb \ 
