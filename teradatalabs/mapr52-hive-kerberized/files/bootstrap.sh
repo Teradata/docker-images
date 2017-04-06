@@ -34,16 +34,6 @@ sh /root/wardenTracker.sh
 # START HTTPFS SERVICES
 maprcli node services -name httpfs -action start -nodes $(hostname) 
 
-# CREATE KERBEROS TICKET
-kinit -kt /opt/mapr/conf/mapr.keytab mapr/mycluster@LABS.TERADATA.COM
-
-# CREATE MAPR TICKET
-maprlogin kerberos -user mapr/mycluster@LABS.TERADATA.COM
-
 # RUN HDFS COMMANDS
-hadoop fs -mkdir /user/root /user/hive /user/hdfs /user/hive/warehouse /var /var/mapr /var/mapr/cluster /var/mapr/cluster/yarn /var/mapr/cluster/yarn/rm /var/mapr/cluster/yarn/rm/staging /var/mapr/cluster/yarn/rm/staging/hive
+hadoop fs -mkdir /user /user/root /user/hive /user/hdfs /user/hive/warehouse /var /var/mapr /var/mapr/cluster /var/mapr/cluster/yarn /var/mapr/cluster/yarn/rm /var/mapr/cluster/yarn/rm/staging /var/mapr/cluster/yarn/rm/staging/hive
 hadoop fs -chmod 777 /user/hive /user/hdfs /user/hive/warehouse /var/mapr /var/mapr/cluster/yarn/rm/staging/hive
-
-# REMOVE MAPR TICKET AND KERBEROS TICKET
-kdestroy
-rm -rf /tmp/*
