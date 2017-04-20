@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 HOSTNAME=$(hostname)
 MAPR_CLI_READY=$(maprcli service list -node $HOSTNAME | grep 'ERROR (10009)' | wc -l)

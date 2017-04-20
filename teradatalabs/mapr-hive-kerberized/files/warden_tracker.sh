@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 HOSTNAME=$(hostname)
 MAPR_LOGIN_READY=1
