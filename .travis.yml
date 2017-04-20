@@ -22,7 +22,7 @@ before_install:
   - sudo pip install docker-release
   - docker-release --version
 
-install: make ${IMAGES[@]}
+install: travis_wait 48 make teradatalabs/mapr52-hive
 
 before_deploy:
   # decrypt the github deploy key
