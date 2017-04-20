@@ -5,7 +5,7 @@ env:
   matrix:
     - IMAGES='teradatalabs/cdh5-base.dependants'
     - IMAGES='teradatalabs/iop-base.dependants'
-    - IMAGES='teradatalabs/mapr52-base.dependants'
+    - IMAGES='teradatalabs/mapr-base.dependants'
     - IMAGES='teradatalabs/centos6-ssh-oj8.dependants'
     - IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv,centos6-java8-oracle-ldap,centos6-java8-oracle-openldap} )
 
@@ -24,7 +24,7 @@ before_install:
   - sudo pip install docker-release
   - docker-release --version
 
-install: travis_wait 30 make ${IMAGES[@]}
+install: travis_wait 45 make ${IMAGES[@]}
 
 before_deploy:
   # decrypt the github deploy key

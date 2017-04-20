@@ -5,7 +5,7 @@ supervisorctl start sshd
 supervisorctl start socks-proxy
 
 # CONFIGURE MAPR
-/opt/mapr/server/configure.sh  -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
+/opt/mapr/server/configure.sh -N mycluster -Z localhost -C localhost -HS localhost -no-autostart
 
 # SETUP DISK FOR MAPR BY RUNNING DISKSETUP
 /opt/mapr/server/disksetup -M -F /root/disk.txt
@@ -21,7 +21,7 @@ service mapr-warden start
 /opt/mapr/server/configure.sh -R
 
 # WAIT FOR WARDEN TO START ALL THE SERVICES
-sh /root/wardenTracker.sh
+/root/warden_tracker.sh
 
 # START HTTPFS SERVICES
 maprcli node services -name httpfs -action start -nodes $(hostname)
