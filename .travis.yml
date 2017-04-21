@@ -3,7 +3,6 @@ dist: trusty
 
 env:
   matrix:
-    - IMAGES='teradatalabs/centos6-java8-oracle.dependants'
     - IMAGES='teradatalabs/centos6-ssh-oj8.dependants'
     - IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv} )
 
@@ -22,7 +21,7 @@ before_install:
   - sudo pip install docker-release
   - docker-release --version
 
-install: travis_wait 48 make teradatalabs/mapr52-hive
+install: travis_wait 48 make teradatalabs/mapr-hive-kerberized
 
 before_deploy:
   # decrypt the github deploy key

@@ -2,7 +2,7 @@
 
 get_user() {
   skip_if_needed
-  if [ "${IMAGE}" == "teradatalabs/mapr52-hive" ]
+  if [ "${IMAGE}" == "teradatalabs/mapr-hive" ]
   then
     echo "hive"
   else

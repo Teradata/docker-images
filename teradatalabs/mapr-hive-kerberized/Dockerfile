@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM teradatalabs/mapr52-hive
+FROM teradatalabs/mapr-hive
 MAINTAINER Teradata Docker Team <docker@teradata.com>
 
 # REMOVE UNNECESSARY FILES
@@ -20,14 +20,14 @@ RUN rm -rf /opt/mapr/conf/ssl_truststore \
   && rm -rf /opt/mapr/conf/maprserverticket \
   && rm -rf /opt/mapr/conf/cldb.key \
   && rm -rf /opt/mapr/conf/ssl_keystore \
-  && rm -rf /root/bootstrap.sh /root/wardenTracker.sh \
+  && rm -rf /root/bootstrap.sh /root/warden_tracker.sh \
   
 # INSTALL KERBEROS
   && yum install -y krb5-libs krb5-server krb5-workstation
 
 # ADD KERBEROS CONFIGURATION
 ADD files/bootstrap.sh /root/
-ADD files/wardenTracker.sh /root/
+ADD files/warden_tracker.sh /root/
 ADD files/kerberos/krb5.conf /etc/krb5.conf
 ADD files/kerberos/kdc.conf /var/kerberos/krb5kdc/kdc.conf
 ADD files/kerberos/kadm5.acl /var/kerberos/krb5kdc/kadm5.acl
@@ -41,6 +41,7 @@ ADD files/conf/hive-site.xml /opt/mapr/hive/hive-1.2/conf/hive-site.xml
 RUN /usr/sbin/kdb5_util create -s -P password \
   && usermod -g root hdfs \
   && usermod -g mapr hdfs \
+
 # CREATE MAPR AND HIVE PRINCIPALS AND KEYTABS
   && /usr/sbin/kadmin.local -q "addprinc -randkey mapr/mycluster@LABS.TERADATA.COM" \
   && /usr/sbin/kadmin.local -q "xst -norandkey -k /opt/mapr/conf/mapr.keytab mapr/mycluster@LABS.TERADATA.COM" \
@@ -53,7 +54,7 @@ RUN /usr/sbin/kdb5_util create -s -P password \
   
 # CHANGE THE PERMISSIONS AND OWNERSHIPS FOR KEYTABS
   && chmod 644  /opt/mapr/conf/hive.keytab /opt/mapr/conf/mapr.keytab /opt/mapr/conf/hdfs.keytab \
-  && chmod 777 /root/bootstrap.sh /root/wardenTracker.sh \
+  && chmod 777 /root/bootstrap.sh /root/warden_tracker.sh \
   && chown mapr:mapr /opt/mapr/conf/mapr.keytab \
   && chown hive:hive /opt/mapr/conf/hive.keytab \
   && chown hdfs:hdfs /opt/mapr/conf/hdfs.keytab \

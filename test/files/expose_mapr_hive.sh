@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Wait for hadoop-master to be available
 conn=0
 while [ $conn -ne 1 ]
 do
@@ -11,6 +12,7 @@ do
  fi
 done
 
+# Wait for hive and warehouse directories in HDFS
 hivecliReady=1
 while [ $hivecliReady -ne 0 ]
 do
