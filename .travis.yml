@@ -3,8 +3,8 @@ dist: trusty
 
 env:
   matrix:
-    - IMAGES='teradatalabs/mapr-base.dependants'
     - IMAGES='teradatalabs/centos6-ssh-oj8.dependants'
+	- IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv} )
 
 # Prevent duplicate builds on tag pushes.
 # See https://github.com/mockito/mockito/commit/500519aac4cc13770aa47c1eb7d28e905c27e7aa
