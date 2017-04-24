@@ -3,11 +3,7 @@ dist: trusty
 
 env:
   matrix:
-    - IMAGES='teradatalabs/cdh5-base.dependants'
-    - IMAGES='teradatalabs/iop-base.dependants'
-    - IMAGES='teradatalabs/mapr52-base.dependants'
-    - IMAGES='teradatalabs/centos6-ssh-oj8.dependants'
-    - IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv,centos6-java8-oracle-ldap,centos6-java8-oracle-openldap} )
+    - IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv} )
 
 # Prevent duplicate builds on tag pushes.
 # See https://github.com/mockito/mockito/commit/500519aac4cc13770aa47c1eb7d28e905c27e7aa
@@ -24,7 +20,7 @@ before_install:
   - sudo pip install docker-release
   - docker-release --version
 
-install: travis_wait 30 make ${IMAGES[@]}
+install: travis_wait 48 make teradatalabs/mapr-hive-kerberized
 
 before_deploy:
   # decrypt the github deploy key

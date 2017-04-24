@@ -29,7 +29,7 @@ service mapr-zookeeper start
 service mapr-warden start
 
 # WAIT FOR WARDEN TO START ALL  THE SERVICES
-sh /root/wardenTracker.sh
+/root/warden_tracker.sh
 
 # START HTTPFS SERVICES
 maprcli node services -name httpfs -action start -nodes $(hostname) 
