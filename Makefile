@@ -63,7 +63,7 @@ JDK_PATH_BUILD_ARGS := \
 # build up into pieces based on image that have a large number of direct and
 # indirect children.
 #
-IMAGE_DIRS=$(shell find $(ORGDIR) -type f -name Dockerfile -exec dirname {} \;)
+IMAGE_DIRS=$(shell find $(ORGDIR) -type f -name Dockerfile -exec dirname {} \; | grep -v presto-cli)
 DOCKERFILES:=$(addsuffix /Dockerfile,$(IMAGE_DIRS))
 DEPS:=$(foreach dockerfile,$(DOCKERFILES),$(DEPDIR)/$(dockerfile:/Dockerfile=.d))
 FLAGS:=$(foreach dockerfile,$(DOCKERFILES),$(FLAGDIR)/$(dockerfile:/Dockerfile=.flags))
