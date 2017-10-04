@@ -3,8 +3,6 @@ dist: trusty
 
 env:
   matrix:
-    - IMAGES='teradatalabs/centos6-java8-oracle.dependants'
-    - IMAGES='teradatalabs/centos6-ssh-oj8.dependants'
     - IMAGES=$( echo teradatalabs/{dns,ubuntu-trusty-python2.6,presto-admin-devenv} )
 
 # Prevent duplicate builds on tag pushes.
@@ -25,7 +23,7 @@ before_install:
   - sudo apt-get -y install docker-ce
   - docker --version
 
-install: make ${IMAGES[@]}
+install: travis_wait 48 make teradatalabs/mapr-hive-kerberized
 
 before_deploy:
   # decrypt the github deploy key
