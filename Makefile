@@ -268,7 +268,7 @@ $(IMAGE_TESTS): test-%: %@latest %/capabilities.txt
 	export TESTED_IMAGE=$(call docker-tag,$<) && \
 	  cd test && \
 	  docker-compose up -t 0 -d hadoop-master && \
-	  time docker-compose run -e EXPECTED_CAPABILITIES="`cat ../$*/capabilities.txt | tr '\n' ' '`" --rm test-runner
+	  time docker-compose run -e EXPECTED_CAPABILITIES="`cat ../$*/capabilities.txt | tr '\n' ' '`" -e IMAGE=$* --rm test-runner
 
 #
 # Static pattern rule to pull docker images that are external dependencies of
